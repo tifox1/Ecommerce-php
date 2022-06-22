@@ -13,7 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
-
+$webroot = $this->request->webroot;
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -27,12 +27,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
+    <link rel="stylesheet" href= <?= $webroot . 'admin/css/base.css' ?> >
+    <link rel="stylesheet" href= <?= $webroot . 'admin/css/style.css' ?> >
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
@@ -45,6 +42,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <ul class="right">
                 <li><a target="_blank" href="https://book.cakephp.org/3/">Documentation</a></li>
                 <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
+                <li><?= $this->Html->link(__('Log out'), [
+                    'controller' => 'Users',
+                    'action' => 'logout',
+                ]); ?></li>
             </ul>
         </div>
     </nav>
@@ -56,3 +57,5 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </footer>
 </body>
 </html>
+<?= $webroot ?>
+<?= $this->Flash->render() ?>

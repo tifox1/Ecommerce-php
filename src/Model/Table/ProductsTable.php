@@ -61,7 +61,11 @@ class ProductsTable extends Table
             ->maxLength('name', 45)
             ->requirePresence('name', 'create')
             ->notEmptyString('name')
-            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('name', 'unique', [
+                'rule' => 'validateUnique', 
+                'provider' => 'table',
+                'messsage' => 'This name belongs to another product'
+            ]);
 
         $validator
             ->integer('price')
@@ -89,6 +93,14 @@ class ProductsTable extends Table
                     'message' => __('It only accepts images')
                 ]
             ]);
+        $validator
+            ->allowEmptyFile('edit_image')
+            ->add('edit_image', [
+                'validExtension' => [
+                    'rule' => ['extension', ['jpeg', 'png', 'jpg']], // default  ['gif', 'jpeg', 'png', 'jpg']
+                    'message' => __('It only accepts images')
+                ]
+            ]);
 
         return $validator;
     }
@@ -111,10 +123,10 @@ class ProductsTable extends Table
 
     public function beforeSave(EventInterface $event, $entity, $options)
     {
-        if ($entity->isNew() && !$entity->slug) {
+        // if ($entity->isNew() && !$entity->slug) {
             $sluggedTitle = Text::slug($entity->name);
             // trim slug to maximum length defined in schema
             $entity->slug = substr($sluggedTitle, 0, 191);
-        }
+        // }
     }
 }

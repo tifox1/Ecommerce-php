@@ -13,11 +13,11 @@
     </ul>
 </nav>
 <div class="images form large-9 medium-8 columns content">
-    <?= $this->Form->create($image) ?>
+    <?= $this->Form->create($image, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Add Image') ?></legend>
         <?php
-            echo $this->Form->control('url');
+            echo $this->Form->control('image', ['type' => 'file']);
             echo $this->Form->control('products_id', ['options' => $products]);
         ?>
     </fieldset>

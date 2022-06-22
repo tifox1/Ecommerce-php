@@ -1,276 +1,344 @@
 <?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
-$this->layout = false;
-
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
-    );
-endif;
-
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
+    $webroot = $this->request->webroot;
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
-
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
-
-<header class="row">
-    <div class="header-image"><?= $this->Html->image('cake.logo.svg') ?></div>
-    <div class="header-title">
-        <h1>Welcome to CakePHP <?= Configure::version() ?> Red Velvet. Build fast. Grow solid.</h1>
-    </div>
-</header>
-
-<div class="row">
-    <div class="columns large-12">
-        <div class="ctp-warning alert text-center">
-            <p>Please be aware that this page will not be shown if you turn off debug mode unless you replace src/Template/Pages/home.ctp with your own version.</p>
+<!--new-arrivals start -->
+<section id="new-arrivals" class="new-arrivals">
+    <div class="container">
+        <div class="section-header">
+            <h2>new arrivals</h2>
+        </div><!--/.section-header-->
+        <div class="new-arrivals-content">
+            <div class="row">
+                <div class="col-md-3 col-sm-4">
+                    <div class="single-new-arrival">
+                        <div class="single-new-arrival-bg">
+                            <img src="assets/images/collection/arrivals1.png" alt="new-arrivals images">
+                            <div class="single-new-arrival-bg-overlay"></div>
+                            <div class="sale bg-1">
+                                <p>sale</p>
+                            </div>
+                            <div class="new-arrival-cart">
+                                <p>
+                                    <span class="lnr lnr-cart"></span>
+                                    <a href="#">add <span>to </span> cart</a>
+                                </p>
+                                <p class="arrival-review pull-right">
+                                    <span class="lnr lnr-heart"></span>
+                                    <span class="lnr lnr-frame-expand"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <h4><a href="#">wooden chair</a></h4>
+                        <p class="arrival-product-price">$65.00</p>
+                    </div>
+                </div>
+                <?php foreach($query as $product):?>
+                    <div class="col-md-3 col-sm-4">
+                        <div class="single-new-arrival">
+                            <div class="single-new-arrival-bg">
+                                <img src= <?= $webroot . $product->main_image?> alt="new-arrivals images">
+                                <div class="single-new-arrival-bg-overlay"></div>
+                                <div class="sale bg-2">
+                                    <p></p>
+                                </div>
+                                <div class="new-arrival-cart">
+                                    <p>
+                                        <span class="lnr lnr-cart"></span>
+                                        <a href="#">add <span>to </span> cart</a>
+                                    </p>
+                                    <p class="arrival-review pull-right">
+                                        <span class="lnr lnr-heart"></span>
+                                        <span class="lnr lnr-frame-expand"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <h4><a href="#"><?= $product->name ?></a></h4>
+                            <p class="arrival-product-price">$<?= $product->price ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <!-- End products -->
+            </div>
         </div>
-        <div id="url-rewriting-warning" class="alert url-rewriting">
-            <ul>
-                <li class="bullet problem">
-                    URL rewriting is not properly configured on your server.<br />
-                    1) <a target="_blank" href="https://book.cakephp.org/3/en/installation.html#url-rewriting">Help me configure it</a><br />
-                    2) <a target="_blank" href="https://book.cakephp.org/3/en/development/configuration.html#general-configuration">I don't / can't use URL rewriting</a>
-                </li>
-            </ul>
+    </div><!--/.container-->
+
+</section><!--/.new-arrivals-->
+<!--new-arrivals end -->
+
+<!--sofa-collection start -->
+<section id="sofa-collection">
+    <div class="owl-carousel owl-theme" id="collection-carousel">
+        <div class="sofa-collection collectionbg1">
+            <div class="container">
+                <div class="sofa-collection-txt">
+                    <h2>unlimited sofa collection</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                    </p>
+                    <div class="sofa-collection-price">
+                        <h4>strting from <span>$ 199</span></h4>
+                    </div>
+                    <button class="btn-cart welcome-add-cart sofa-collection-btn" onclick="window.location.href='#'">
+                        view more
+                    </button>
+                </div>
+            </div>	
+        </div><!--/.sofa-collection-->
+        <div class="sofa-collection collectionbg2">
+            <div class="container">
+                <div class="sofa-collection-txt">
+                    <h2>unlimited dainning table collection</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                    </p>
+                    <div class="sofa-collection-price">
+                        <h4>strting from <span>$ 299</span></h4>
+                    </div>
+                    <button class="btn-cart welcome-add-cart sofa-collection-btn" onclick="window.location.href='#'">
+                        view more
+                    </button>
+                </div>
+            </div>
+        </div><!--/.sofa-collection-->
+    </div><!--/.collection-carousel-->
+
+</section><!--/.sofa-collection-->
+<!--sofa-collection end -->
+
+<!--feature start -->
+<section id="feature" class="feature">
+    <div class="container">
+        <div class="section-header">
+            <h2>featured products</h2>
+        </div><!--/.section-header-->
+        <div class="feature-content">
+            <div class="row">
+                <?php foreach($query as $product):?>
+                    <div class="col-sm-3">
+                        <div class="single-feature">
+                            <img src= <?= $webroot . $product->main_image ?> alt="feature image">
+                            <div class="single-feature-txt text-center">
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
+                                    <span class="feature-review">(45 review)</span>
+                                </p>
+                                <h3><a href="#"><?= $product->name ?></a></h3>
+                                <h5>$ <?= $product->price ?></h5>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
-        <?php Debugger::checkSecurityKeys(); ?>
-    </div>
-</div>
+    </div><!--/.container-->
 
-<div class="row">
-    <div class="columns large-6">
-        <h4>Environment</h4>
-        <ul>
-        <?php if (version_compare(PHP_VERSION, '5.6.0', '>=')) : ?>
-            <li class="bullet success">Your version of PHP is 5.6.0 or higher (detected <?= PHP_VERSION ?>).</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP is too low. You need PHP 5.6.0 or higher to use CakePHP (detected <?= PHP_VERSION ?>).</li>
-        <?php endif; ?>
+</section><!--/.feature-->
+<!--feature end -->
 
-        <?php if (extension_loaded('mbstring')) : ?>
-            <li class="bullet success">Your version of PHP has the mbstring extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the mbstring extension loaded.</li>
-        <?php endif; ?>
+<!--blog start -->
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="section-header">
+            <h2>latest blog</h2>
+        </div><!--/.section-header-->
+        <div class="blog-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="single-blog">
+                        <div class="single-blog-img">
+                            <img src="assets/images/blog/b1.jpg" alt="blog image">
+                            <div class="single-blog-img-overlay"></div>
+                        </div>
+                        <div class="single-blog-txt">
+                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
+                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
+                            <p>
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-sm-4">
+                    <div class="single-blog">
+                        <div class="single-blog-img">
+                            <img src="assets/images/blog/b2.jpg" alt="blog image">
+                            <div class="single-blog-img-overlay"></div>
+                        </div>
+                        <div class="single-blog-txt">
+                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
+                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
+                            <p>
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="single-blog">
+                        <div class="single-blog-img">
+                            <img src="assets/images/blog/b3.jpg" alt="blog image">
+                            <div class="single-blog-img-overlay"></div>
+                        </div>
+                        <div class="single-blog-txt">
+                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
+                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
+                            <p>
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/.container-->
+    
+</section><!--/.blog-->
+<!--blog end -->
 
-        <?php if (extension_loaded('openssl')) : ?>
-            <li class="bullet success">Your version of PHP has the openssl extension loaded.</li>
-        <?php elseif (extension_loaded('mcrypt')) : ?>
-            <li class="bullet success">Your version of PHP has the mcrypt extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</li>
-        <?php endif; ?>
+<!-- clients strat -->
+<section id="clients"  class="clients">
+    <div class="container">
+        <div class="owl-carousel owl-theme" id="client">
+                <div class="item">
+                    <a href="#">
+                        <img src="assets/images/clients/c1.png" alt="brand-image" />
+                    </a>
+                </div><!--/.item-->
+                <div class="item">
+                    <a href="#">
+                        <img src="assets/images/clients/c2.png" alt="brand-image" />
+                    </a>
+                </div><!--/.item-->
+                <div class="item">
+                    <a href="#">
+                        <img src="assets/images/clients/c3.png" alt="brand-image" />
+                    </a>
+                </div><!--/.item-->
+                <div class="item">
+                    <a href="#">
+                        <img src="assets/images/clients/c4.png" alt="brand-image" />
+                    </a>
+                </div><!--/.item-->
+                <div class="item">
+                    <a href="#">
+                        <img src="assets/images/clients/c5.png" alt="brand-image" />
+                    </a>
+                </div><!--/.item-->
+            </div><!--/.owl-carousel-->
 
-        <?php if (extension_loaded('intl')) : ?>
-            <li class="bullet success">Your version of PHP has the intl extension loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your version of PHP does NOT have the intl extension loaded.</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h4>Filesystem</h4>
-        <ul>
-        <?php if (is_writable(TMP)) : ?>
-            <li class="bullet success">Your tmp directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your tmp directory is NOT writable.</li>
-        <?php endif; ?>
+    </div><!--/.container-->
 
-        <?php if (is_writable(LOGS)) : ?>
-            <li class="bullet success">Your logs directory is writable.</li>
-        <?php else : ?>
-            <li class="bullet problem">Your logs directory is NOT writable.</li>
-        <?php endif; ?>
+</section><!--/.clients-->	
+<!-- clients end -->
 
-        <?php $settings = Cache::getConfig('_cake_core_'); ?>
-        <?php if (!empty($settings)) : ?>
-            <li class="bullet success">The <em><?= $settings['className'] ?>Engine</em> is being used for core caching. To change the config edit config/app.php</li>
-        <?php else : ?>
-            <li class="bullet problem">Your cache is NOT working. Please check the settings in config/app.php</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <hr />
-</div>
+<!--newsletter strat -->
+<section id="newsletter"  class="newsletter">
+    <div class="container">
+        <div class="hm-footer-details">
+            <div class="row">
+                <div class=" col-md-3 col-sm-6 col-xs-12">
+                    <div class="hm-footer-widget">
+                        <div class="hm-foot-title">
+                            <h4>information</h4>
+                        </div><!--/.hm-foot-title-->
+                        <div class="hm-foot-menu">
+                            <ul>
+                                <li><a href="#">about us</a></li><!--/li-->
+                                <li><a href="#">contact us</a></li><!--/li-->
+                                <li><a href="#">news</a></li><!--/li-->
+                                <li><a href="#">store</a></li><!--/li-->
+                            </ul><!--/ul-->
+                        </div><!--/.hm-foot-menu-->
+                    </div><!--/.hm-footer-widget-->
+                </div><!--/.col-->
+                <div class=" col-md-3 col-sm-6 col-xs-12">
+                    <div class="hm-footer-widget">
+                        <div class="hm-foot-title">
+                            <h4>collections</h4>
+                        </div><!--/.hm-foot-title-->
+                        <div class="hm-foot-menu">
+                            <ul>
+                                <li><a href="#">wooden chair</a></li><!--/li-->
+                                <li><a href="#">royal cloth sofa</a></li><!--/li-->
+                                <li><a href="#">accent chair</a></li><!--/li-->
+                                <li><a href="#">bed</a></li><!--/li-->
+                                <li><a href="#">hanging lamp</a></li><!--/li-->
+                            </ul><!--/ul-->
+                        </div><!--/.hm-foot-menu-->
+                    </div><!--/.hm-footer-widget-->
+                </div><!--/.col-->
+                <div class=" col-md-3 col-sm-6 col-xs-12">
+                    <div class="hm-footer-widget">
+                        <div class="hm-foot-title">
+                            <h4>my accounts</h4>
+                        </div><!--/.hm-foot-title-->
+                        <div class="hm-foot-menu">
+                            <ul>
+                                <li><a href="#">my account</a></li><!--/li-->
+                                <li><a href="#">wishlist</a></li><!--/li-->
+                                <li><a href="#">Community</a></li><!--/li-->
+                                <li><a href="#">order history</a></li><!--/li-->
+                                <li><a href="#">my cart</a></li><!--/li-->
+                            </ul><!--/ul-->
+                        </div><!--/.hm-foot-menu-->
+                    </div><!--/.hm-footer-widget-->
+                </div><!--/.col-->
+                <div class=" col-md-3 col-sm-6  col-xs-12">
+                    <div class="hm-footer-widget">
+                        <div class="hm-foot-title">
+                            <h4>newsletter</h4>
+                        </div><!--/.hm-foot-title-->
+                        <div class="hm-foot-para">
+                            <p>
+                                Subscribe  to get latest news,update and information.
+                            </p>
+                        </div><!--/.hm-foot-para-->
+                        <div class="hm-foot-email">
+                            <div class="foot-email-box">
+                                <input type="text" class="form-control" placeholder="Enter Email Here....">
+                            </div><!--/.foot-email-box-->
+                            <div class="foot-email-subscribe">
+                                <span><i class="fa fa-location-arrow"></i></span>
+                            </div><!--/.foot-email-icon-->
+                        </div><!--/.hm-foot-email-->
+                    </div><!--/.hm-footer-widget-->
+                </div><!--/.col-->
+            </div><!--/.row-->
+        </div><!--/.hm-footer-details-->
 
-<div class="row">
-    <div class="columns large-6">
-        <h4>Database</h4>
-        <?php
-        try {
-            $connection = ConnectionManager::get('default');
-            $connected = $connection->connect();
-        } catch (Exception $connectionError) {
-            $connected = false;
-            $errorMsg = $connectionError->getMessage();
-            if (method_exists($connectionError, 'getAttributes')) :
-                $attributes = $connectionError->getAttributes();
-                if (isset($errorMsg['message'])) :
-                    $errorMsg .= '<br />' . $attributes['message'];
-                endif;
-            endif;
-        }
-        ?>
-        <ul>
-        <?php if ($connected) : ?>
-            <li class="bullet success">CakePHP is able to connect to the database.</li>
-        <?php else : ?>
-            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= $errorMsg ?></li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h4>DebugKit</h4>
-        <ul>
-        <?php if (Plugin::isLoaded('DebugKit')) : ?>
-            <li class="bullet success">DebugKit is loaded.</li>
-        <?php else : ?>
-            <li class="bullet problem">DebugKit is NOT loaded. You need to either install pdo_sqlite, or define the "debug_kit" connection name.</li>
-        <?php endif; ?>
-        </ul>
-    </div>
-    <hr />
-</div>
+    </div><!--/.container-->
 
-<div class="row">
-    <div class="columns large-6">
-        <h3>Editing this Page</h3>
-        <ul>
-            <li class="bullet cutlery">To change the content of this page, edit: src/Template/Pages/home.ctp.</li>
-            <li class="bullet cutlery">You can also add some CSS styles for your pages at: webroot/css/.</li>
-        </ul>
-    </div>
-    <div class="columns large-6">
-        <h3>Getting Started</h3>
-        <ul>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3/en/">CakePHP 3.0 Docs</a></li>
-            <li class="bullet book"><a target="_blank" href="https://book.cakephp.org/3/en/tutorials-and-examples/cms/installation.html">The 20 min CMS Tutorial</a></li>
-        </ul>
-    </div>
-</div>
+</section><!--/newsletter-->	
+<!--newsletter end -->
 
-<div class="row">
-    <div class="columns large-12 text-center">
-        <h3 class="more">More about Cake</h3>
-        <p>
-            CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.<br />
-            Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
-        </p>
-    </div>
-    <hr/>
-</div>
+<!--footer start-->
+<footer id="footer"  class="footer">
+    <div class="container">
+        <div class="hm-footer-copyright text-center">
+            <div class="footer-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>	
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-pinterest"></i></a>
+                <a href="#"><i class="fa fa-behance"></i></a>	
+            </div>
+            <p>
+                &copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
+            </p><!--/p-->
+        </div><!--/.text-center-->
+    </div><!--/.container-->
 
-<div class="row">
-    <div class="columns large-4">
-        <i class="icon support">P</i>
-        <h3>Help and Bug Reports</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="irc://irc.freenode.net/cakephp">irc.freenode.net #cakephp</a>
-                <ul><li>Live chat about CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="http://cakesf.herokuapp.com/">Slack</a>
-                <ul><li>CakePHP Slack support</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/cakephp/cakephp/issues">CakePHP Issues</a>
-                <ul><li>CakePHP issues and pull requests</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="http://discourse.cakephp.org/">CakePHP Forum</a>
-                <ul><li>CakePHP official discussion forum</li></ul>
-            </li>
-        </ul>
-    </div>
-    <div class="columns large-4">
-        <i class="icon docs">r</i>
-        <h3>Docs and Downloads</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="https://api.cakephp.org/3.0/">CakePHP API</a>
-                <ul><li>Quick Reference</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://book.cakephp.org/3/en/">CakePHP Documentation</a>
-                <ul><li>Your Rapid Development Cookbook</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://bakery.cakephp.org">The Bakery</a>
-                <ul><li>Everything CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://plugins.cakephp.org">CakePHP plugins repo</a>
-                <ul><li>A comprehensive list of all CakePHP plugins created by the community</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/cakephp/">CakePHP Code</a>
-                <ul><li>For the Development of CakePHP Git repository, Downloads</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://github.com/FriendsOfCake/awesome-cakephp">CakePHP Awesome List</a>
-                <ul><li>A curated list of amazingly awesome CakePHP plugins, resources and shiny things.</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://www.cakephp.org">CakePHP</a>
-                <ul><li>The Rapid Development Framework</li></ul>
-            </li>
-        </ul>
-    </div>
-    <div class="columns large-4">
-        <i class="icon training">s</i>
-        <h3>Training and Certification</h3>
-        <ul>
-            <li class="bullet cutlery">
-                <a href="https://cakefoundation.org/">Cake Software Foundation</a>
-                <ul><li>Promoting development related to CakePHP</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://training.cakephp.org/">CakePHP Training</a>
-                <ul><li>Learn to use the CakePHP framework</li></ul>
-            </li>
-            <li class="bullet cutlery">
-                <a href="https://certification.cakephp.org/">CakePHP Certification</a>
-                <ul><li>Become a certified CakePHP developer</li></ul>
-            </li>
-        </ul>
-    </div>
-</div>
-
-</body>
-</html>
+    <div id="scroll-Top">
+        <div class="return-to-top">
+            <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+        </div>
+        
+    </div><!--/.scroll-Top-->
+    
+</footer><!--/.footer-->
+<!--footer end-->

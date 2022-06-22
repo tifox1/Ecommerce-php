@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use PhpParser\Node\Stmt\Echo_;
+use Cake\ORM\TableRegistry;
+
 
 define("img_dir", "webroot/img_db/products/");
 /**
@@ -20,21 +22,71 @@ class ProductsController extends AppController
      * @return \Cake\Http\Response|null
      */
 
+    public function initialize()
+    {
+        // Always enable the CSRF component.
+        $this->loadModel('Images');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'authorize' => 'Controller',
+        ]);
+    }
+
+    /* 
+        *When a product is edited it changes file names attached to that correspond product.   
+    */
+    private function setNewFilename($entity) {
+        $images = TableRegistry::get('Images');
+        $query = $images
+            ->find()
+            ->where([
+                'products_id' => $entity->id,
+            ]);
+        
+        foreach ($query as $image) {
+            if (file_exists($image->url)) {
+                $file = explode('_', $image->url);
+                print_r($file);
+                $filepath = img_dir . $entity->name . '_' . 'child' . '_' . $file[3];
+                rename($image->url, $filepath);
+                $image->url = $filepath; 
+                $this->Images->save($image);
+            }
+        }
+
+    }
+
     /**
      * it saves tmp_image in product folder in a id_type.format
      * first parameter recieve data of request
      * second parameter $type it recieve if image is a parent or child to organize well directory
+     * third parameter recieves form html name 
      * @return new path field of the image
     */
-    public function setImage($data, $type){
 
-        $temp_name = explode(".", $data['image']['name']);
+    public function isAuthorized($user)
+    {
+        if ($user) {
+            return true;
+        }
+        $this->redirect([
+            'controller' => 'Users',
+            'action' => 'login'
+        ]);
+        // Default deny
+        return false;
+    }
+
+    private function setImage($data, $type, $formname){
+
+        $temp_name = explode(".", $data[$formname]['name']);
         //it converts to name_parent.ext or parent_child.ext
         $newfilename = $data['name']. '_'. $type . '.' . end($temp_name);
+        echo $newfilename;
 
-        move_uploaded_file($data['image']['tmp_name'], img_dir . $newfilename);
-
-        return strval(img_dir . $newfilename);
+        move_uploaded_file($data[$formname]['tmp_name'], img_dir . $newfilename);
+        // $this->setNewFilename();
+        return strval("img_db/products/" . $newfilename);
     }
 
     public function index()
@@ -76,11 +128,9 @@ class ProductsController extends AppController
             $file_type = explode('/', $file_info['type']);
 
             if ($file_info['error'] == 0 || $file_type[0] == 'image') {
-                echo 'Entroooooooooooooooooooooooooooooooooo';
                 $product = $this->Products->patchEntity($product, $this->request->getData());
-                $product->main_image = $this->setImage($this->request->data, 'parent'); 
+                $product->main_image = $this->setImage($this->request->data, 'parent', 'image'); 
                 if ($this->Products->save($product)) {
-                    echo '|' . $product->id . '|';
                     $this->Flash->success(__('The product has been saved.'));
 
                     return $this->redirect(['action' => 'index']);
@@ -109,22 +159,23 @@ class ProductsController extends AppController
             // determines whether file is upload or user only changed its name of the product
 
             /** if new image is uploaded*/
-            if ($this->request->data['image']['error'] != 4) {
-                echo 'Condicion1';
+            if ($this->request->data['edit_image']['error'] != 4) {
                 if (file_exists($product->main_image)){
                     unlink($product->main_image);
                 }
-                $product->url = $this->setImage($this->request->data);
+                $product->main_image = $this->setImage($this->request->data, 'parent', 'edit_image');
+
             } else {
-                echo 'Condicion2';
-                $file = explode('.', $product->url);
-                $new_path = img_dir . $this->request->data['name']. '_main' . '.' . end($file);
-                rename($product->url, $new_path);
-                $product->url = $new_path; 
+                $file = explode('.', $product->main_image);
+                $new_path = img_dir . $this->request->data['name'] . '_parent' . '.' . end($file);
+                rename($product->main_image, $new_path);
+                $product->main_image = $new_path; 
             }
 
             $product = $this->Products->patchEntity($product, $this->request->getData());
+            $this->setNewFilename($product);
             if ($this->Products->save($product)) {
+
                 $this->Flash->success(__('The product has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

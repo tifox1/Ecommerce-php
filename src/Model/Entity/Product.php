@@ -37,5 +37,6 @@ class Product extends Entity
         'category' => true,
         'image' => true,
         'slug' => true,
+        'edit_image' => true,
     ];
 }
