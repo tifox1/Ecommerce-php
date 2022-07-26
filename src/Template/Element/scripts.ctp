@@ -1,4 +1,6 @@
-
+<?php
+    $webroot = $this->request->webroot;
+?>
 <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
 <script src= <?= $webroot . "js/jquery.js" ?> ></script>
@@ -21,3 +23,8 @@
 
 <!--Custom JS-->
 <script src= <?= $webroot . "js/custom.js" ?> ></script>
+
+<!--Carousel Product-->
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src= <?= $webroot . "js/carousel.js"?>></script>
+

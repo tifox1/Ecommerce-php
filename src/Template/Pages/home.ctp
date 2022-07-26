@@ -1,50 +1,33 @@
 <?php
     $webroot = $this->request->webroot;
+    print_r($order_line);
 ?>
 <!--new-arrivals start -->
 <section id="new-arrivals" class="new-arrivals">
+    
     <div class="container">
         <div class="section-header">
             <h2>new arrivals</h2>
         </div><!--/.section-header-->
         <div class="new-arrivals-content">
             <div class="row">
-                <div class="col-md-3 col-sm-4">
-                    <div class="single-new-arrival">
-                        <div class="single-new-arrival-bg">
-                            <img src="assets/images/collection/arrivals1.png" alt="new-arrivals images">
-                            <div class="single-new-arrival-bg-overlay"></div>
-                            <div class="sale bg-1">
-                                <p>sale</p>
-                            </div>
-                            <div class="new-arrival-cart">
-                                <p>
-                                    <span class="lnr lnr-cart"></span>
-                                    <a href="#">add <span>to </span> cart</a>
-                                </p>
-                                <p class="arrival-review pull-right">
-                                    <span class="lnr lnr-heart"></span>
-                                    <span class="lnr lnr-frame-expand"></span>
-                                </p>
-                            </div>
-                        </div>
-                        <h4><a href="#">wooden chair</a></h4>
-                        <p class="arrival-product-price">$65.00</p>
-                    </div>
-                </div>
-                <?php foreach($query as $product):?>
+                <?php foreach($arrivals as $product):?>
                     <div class="col-md-3 col-sm-4">
                         <div class="single-new-arrival">
                             <div class="single-new-arrival-bg">
-                                <img src= <?= $webroot . $product->main_image?> alt="new-arrivals images">
+                                <img src= <?= $webroot . $product->product->main_image?> alt="new-arrivals images">
                                 <div class="single-new-arrival-bg-overlay"></div>
                                 <div class="sale bg-2">
-                                    <p></p>
+                                    <p>sale</p>
                                 </div>
                                 <div class="new-arrival-cart">
                                     <p>
                                         <span class="lnr lnr-cart"></span>
-                                        <a href="#">add <span>to </span> cart</a>
+                                        <a href="<?= $this->Url->build([
+                                            'controller' => 'Pages',
+                                            'action' => 'product',
+                                            $product->product->slug
+                                        ])?>">add <span>to </span> cart</a>
                                     </p>
                                     <p class="arrival-review pull-right">
                                         <span class="lnr lnr-heart"></span>
@@ -52,8 +35,12 @@
                                     </p>
                                 </div>
                             </div>
-                            <h4><a href="#"><?= $product->name ?></a></h4>
-                            <p class="arrival-product-price">$<?= $product->price ?></p>
+                            <h4><a href="<?= $this->Url->build([
+                                'controller' => 'Pages',
+                                'action' => 'product',
+                                $product->product->slug
+                            ])?>"><?= $product->product->name ?></a></h4>
+                            <p class="arrival-product-price">$<?= $product->product->price ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -126,7 +113,11 @@
                                     <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
                                     <span class="feature-review">(45 review)</span>
                                 </p>
-                                <h3><a href="#"><?= $product->name ?></a></h3>
+                                <h3><a href="<?= $this->Url->build([
+                                    'controller' => 'Pages',
+                                    'action' => 'product',
+                                    $product->slug
+                                ])?>"><?= $product->name ?></a></h3>
                                 <h5>$ <?= $product->price ?></h5>
                             </div>
                         </div>
@@ -147,55 +138,34 @@
         </div><!--/.section-header-->
         <div class="blog-content">
             <div class="row">
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b1.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
-                            </p>
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b2.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
-                            </p>
+                <?php foreach($articles as $article):?>
+                    <div class="col-sm-4">
+                        <div class="single-blog">
+                            <div class="single-blog-img">
+                                <img src= <?= $webroot . $article->main_image ?>  alt="blog image">
+                                <div class="single-blog-img-overlay"></div>
+                            </div>
+                            <div class="single-blog-txt">
+                                <h2><a href="<?= $this->Url->build([
+                                    'controller' => 'Pages',
+                                    'action' => 'article',
+                                    $article->slug
+                                ])?>"><?= $article->title ?></a></h2>
+                                <h3>By <a href="<?= $this->Url->build([
+                                    'controller' => 'Pages',
+                                    'action' => 'article',
+                                    $article->slug
+                                ])?>"><?= $article->autor ?></a> / <?= $article->created_time ?></h3>
+                                <p>
+                                    <?= $article->subtitle ?>...
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="single-blog">
-                        <div class="single-blog-img">
-                            <img src="assets/images/blog/b3.jpg" alt="blog image">
-                            <div class="single-blog-img-overlay"></div>
-                        </div>
-                        <div class="single-blog-txt">
-                            <h2><a href="#">Why Brands are Looking at Local Language</a></h2>
-                            <h3>By <a href="#">Robert Norby</a> / 18th March 2018</h3>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.... 
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach;?>
             </div>
         </div>
-    </div><!--/.container-->
+    </div><!--/.container--> 
     
 </section><!--/.blog-->
 <!--blog end -->

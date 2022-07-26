@@ -26,12 +26,30 @@ class ProductsController extends AppController
     {
         // Always enable the CSRF component.
         $this->loadModel('Images');
+        $this->loadModel('Categories');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'authorize' => 'Controller',
         ]);
     }
 
+    /*
+        data -> image information
+        type -> if is child or parent
+        formname -> form where is the image information 
+    */
+    private function setImage($data, $type, $formname){
+
+        $temp_name = explode(".", $data[$formname]['name']);
+        //it converts to name_parent.ext or parent_child.ext
+        $newfilename = $data['name']. '_'. $type . '.' . end($temp_name);
+        echo $newfilename;
+
+        move_uploaded_file($data[$formname]['tmp_name'], img_dir . $newfilename);
+        // $this->setNewFilename();
+        return strval("img_db/products/" . $newfilename);
+    }
+    
     /* 
         *When a product is edited it changes file names attached to that correspond product.   
     */
@@ -42,7 +60,7 @@ class ProductsController extends AppController
             ->where([
                 'products_id' => $entity->id,
             ]);
-        
+        //It iterates related files and renames with the new name.
         foreach ($query as $image) {
             if (file_exists($image->url)) {
                 $file = explode('_', $image->url);
@@ -77,26 +95,23 @@ class ProductsController extends AppController
         return false;
     }
 
-    private function setImage($data, $type, $formname){
-
-        $temp_name = explode(".", $data[$formname]['name']);
-        //it converts to name_parent.ext or parent_child.ext
-        $newfilename = $data['name']. '_'. $type . '.' . end($temp_name);
-        echo $newfilename;
-
-        move_uploaded_file($data[$formname]['tmp_name'], img_dir . $newfilename);
-        // $this->setNewFilename();
-        return strval("img_db/products/" . $newfilename);
-    }
-
+    /* Lists products*/
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Categories'],
-        ];
-        $products = $this->paginate($this->Products);
+        $categories = $this->Categories->find('list');
+        $products = $this->paginate($this->Products->find('all')->contain(['Categories']));
 
-        $this->set(compact('products'));
+        /* Filter product by categories */
+        if ($this->request->is('post')){
+
+            $products = $this->Paginate($this->Products->find('all')
+                ->where([
+                'categories_id' => $this->request->data['categories_id']
+            ]));
+        } 
+
+        $this->set(compact(['products', 'categories']));
+
     }
 
     /**
@@ -106,6 +121,7 @@ class ProductsController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+
     public function view($id = null)
     {
         $product = $this->Products->get($id, [
@@ -156,26 +172,24 @@ class ProductsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            // determines whether file is upload or user only changed its name of the product
-
-            /** if new image is uploaded*/
-            if ($this->request->data['edit_image']['error'] != 4) {
-                if (file_exists($product->main_image)){
-                    unlink($product->main_image);
-                }
-                $product->main_image = $this->setImage($this->request->data, 'parent', 'edit_image');
-
-            } else {
-                $file = explode('.', $product->main_image);
-                $new_path = img_dir . $this->request->data['name'] . '_parent' . '.' . end($file);
-                rename($product->main_image, $new_path);
-                $product->main_image = $new_path; 
-            }
-
             $product = $this->Products->patchEntity($product, $this->request->getData());
-            $this->setNewFilename($product);
             if ($this->Products->save($product)) {
+                
+                // determines whethera new file is uploaded or user only changed its name of the product
+                if ($this->request->data['edit_image']['error'] != 4) {
+                    if (file_exists($product->main_image)){
+                        unlink($product->main_image);
+                    }
+                    $product->main_image = $this->setImage($this->request->data, 'parent', 'edit_image');
 
+                } else {
+                    $file = explode('.', $product->main_image);
+                    $new_path = img_dir . $this->request->data['name'] . '_parent' . '.' . end($file);
+                    rename($product->main_image, $new_path);
+                    $product->main_image = $new_path; 
+                }
+                $this->setNewFilename($product);
+                $this->Products->save($product);
                 $this->Flash->success(__('The product has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -207,7 +221,7 @@ class ProductsController extends AppController
                         unlink($file);
                     }
                 }
-            }
+            } 
 
             $this->Flash->success(__('The product has been deleted.'));
         } else {

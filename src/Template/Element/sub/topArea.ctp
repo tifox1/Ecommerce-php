@@ -1,3 +1,6 @@
+<?php 
+    $webroot = $this->request->webroot;
+?>
 <!-- top-area Start -->
 <div class="top-area">
     <div class="header-area">
@@ -16,7 +19,7 @@
             </div>
             <!-- End Top Search -->
 
-            <div class="container">            
+            <div class="container">           
                 <!-- Start Atribute Navigation -->
                 <div class="attr-nav">
                     <ul>
@@ -29,43 +32,45 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                                 <span class="lnr lnr-cart"></span>
-                                <span class="badge badge-bg-1">2</span>
+                                <span class="badge badge-bg-1"><?php echo count($order_line);?></span>
                             </a>
+
                             <ul class="dropdown-menu cart-list s-cate">
-                                <li class="single-cart-list">
-                                    <a href="#" class="photo"><img src= <?= $webroot . "images/collection/arrivals1.png" ?> class="cart-thumb" alt="image" /></a>
-                                    <div class="cart-list-txt">
-                                        <h6><a href="#">arm <br> chair</a></h6>
-                                        <p>1 x - <span class="price">$180.00</span></p>
-                                    </div><!--/.cart-list-txt-->
-                                    <div class="cart-close">
-                                        <span class="lnr lnr-cross"></span>
-                                    </div><!--/.cart-close-->
-                                </li><!--/.single-cart-list -->
-                                <li class="single-cart-list">
-                                    <a href="#" class="photo"><img src="assets/images/collection/arrivals2.png" class="cart-thumb" alt="image" /></a>
-                                    <div class="cart-list-txt">
-                                        <h6><a href="#">single <br> armchair</a></h6>
-                                        <p>1 x - <span class="price">$180.00</span></p>
-                                    </div><!--/.cart-list-txt-->
-                                    <div class="cart-close">
-                                        <span class="lnr lnr-cross"></span>
-                                    </div><!--/.cart-close-->
-                                </li><!--/.single-cart-list -->
-                                <li class="single-cart-list">
-                                    <a href="#" class="photo"><img src="assets/images/collection/arrivals3.png" class="cart-thumb" alt="image" /></a>
-                                    <div class="cart-list-txt">
-                                        <h6><a href="#">wooden arn <br> chair</a></h6>
-                                        <p>1 x - <span class="price">$180.00</span></p>
-                                    </div><!--/.cart-list-txt-->
-                                    <div class="cart-close">
-                                        <span class="lnr lnr-cross"></span>
-                                    </div><!--/.cart-close-->
-                                </li><!--/.single-cart-list -->
-                                <li class="total">
-                                    <span>Total: $0.00</span>
-                                    <button class="btn-cart pull-right" onclick="window.location.href='#'">view cart</button>
-                                </li>
+
+                                <?php foreach($order_line as $product):?>
+                                    <li class="single-cart-list">
+                                        <a href="#" class="photo"><img src="<?= $webroot . $product['main_image'] ?>" class="cart-thumb" alt="image" /></a>
+                                        <div class="cart-list-txt">
+                                            <h6><?= $product['name']?></h6>
+                                            <p><?= $product['quantity']?> x - <span class="price">$<?= $product['price'] ?></span></p>
+                                        </div><!--/.cart-list-txt-->
+                                        <div class="cart-close" onclick="window.location.replace('http://localhost:8765/pages/delete_product/<?= $product['slug']?>')">
+                                            <span class="lnr lnr-cross"></span>
+                                        </div>
+                                    </li><!--/.single-cart-list -->
+                                <?php endforeach;?>
+                                <?php if (count($order_line)!= 0):?>
+                                    <li class="single-cart-list">
+                                        <?php echo $this->Form->create(null, [
+                                            'class' => 'order-form',
+                                            'url' => [
+                                                'controller' => 'Pages',
+                                                'action' => "createOrder",
+                                            ]
+                                        ]); ?>
+                                            <div class="order-price">
+                                                <p>Total: <?= $total_price?></p>
+                                            </div>
+                                            <div class="order-button">
+                                                <button class="btn-cart welcome-add-cart animated fadeInDown" formaction="/pages/createOrder" type="submit" style="opacity: 0;">
+                                                    Hacer <span>pedido</span> 
+                                                </button>
+                                            </div>    
+                                        <?php echo $this->Form->end();?>
+                            
+                                    </li><!--/.single-cart-list -->
+                                <?php endif;?>
+
                             </ul>
                         </li><!--/.dropdown-->
                     </ul>
@@ -77,7 +82,10 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="index.html">sine<span>mkt</span>.</a>
+                    <a class="navbar-brand" href="<?= $this->Url->build([
+                        'controller' => 'Pages',
+                        'action' => 'home',
+                    ])?>">sine<span>mkt</span>.</a>
 
                 </div><!--/.navbar-header-->
                 <!-- End Header Navigation -->

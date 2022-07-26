@@ -99,9 +99,10 @@ $(document).ready(function(){
         });
 
 
-	// 4. cart-close
-		$(".cart-close").click(function(){
-			$(this).parents(".single-cart-list").fadeOut();
-		});
-
 });
+function cartClose(slug){
+	// $(".cart-close").click(function(){
+		// $(this).parents(".single-cart-list").fadeOut();
+	window.location.replace(`http://localhost:8765/pages/delete_product/${slug}`);
+	// });
+}

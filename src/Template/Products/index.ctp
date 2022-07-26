@@ -15,6 +15,18 @@
 </nav>
 <div class="products index large-9 medium-8 columns content">
     <h3><?= __('Products') ?></h3>
+    <?php
+        echo $this->Form->create(null, [
+            'type' => 'post',
+            'url' => [
+                'controller' => 'Products',
+                'action' => 'index'
+            ]
+        ]);
+        echo $this->Form->control('categories_id', ['options' => $categories]);
+        echo $this->Form->submit();
+        echo $this->Form->end();
+    ?>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>

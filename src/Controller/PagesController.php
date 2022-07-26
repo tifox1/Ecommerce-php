@@ -18,6 +18,9 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\Validation\Validator;
+use Cake\Http\Session\DatabaseSession;
+
 
 /**
  * Static content controller
@@ -44,9 +47,24 @@ class PagesController extends AppController
         parent::initialize();
         $this->loadModel('Products');
         $this->loadModel('Images');
-
+        $this->loadModel('Arrivals');
+        $this->loadModel('Orders');
+        $this->loadModel('Orderlines');
+        $this->loadModel('Articles');
+        $this->session = $this->request->session();
     }
 
+    public function isAuthorized($user = null)
+    {
+        $action = $this->request->getParam('action');
+
+        if (in_array($action,['product','article'])) {
+            if(!$this->request->getParam('pass.0')){
+                return false;
+            }
+        }
+        return true;
+    }
 
     // public function display(...$path)
     // {
@@ -82,13 +100,138 @@ class PagesController extends AppController
         $this->viewBuilder()->setLayout('header');
 
         $query = $this->Products->find('all');
+        $arrivals = $this->Arrivals->find('all')->contain(['Products']);
+        $articles = $this->Articles->find('all');
+        $slide = true;
+        // $session = $this->request->session();
+        foreach($articles as $article){
+            $article->created_time = date_format(
+                $article->created_time,
+                'dS F Y'
+            );
+            $article->subtitle = substr($article->subtitle, 0, 200);
+        }   
 
-        
-        // foreach($query as $product){
-        //     echo $product->product->name;
-        // }   
-
-        $this->set(compact('query'));
+        $this->set(compact(['query', 'arrivals', 'slide', 'articles']));
     }
 
+    public function product($slug) 
+    {
+        $slide = false;
+        $this->viewBuilder()->setLayout('header');
+        $product = $this->Products->findBySlug($slug)->firstOrFail();
+        $images = $this->Images->find('all')->where([
+            'products_id' => $product->id
+        ]);
+        //defining session variables to handle
+        // $session = $this->request->session();
+        $order_line = $this->session->read('order_line');
+
+        /*
+            It validates add cart Form
+        */        
+        $validation = new Validator();
+        $validation
+            ->integer('quantity')
+            ->notEmptyString('quantity');
+            
+        if ($this->request->is('post') || $this->request->is('put')){
+            $errors = $validation->validate($this->request->getData());
+            if(empty($errors)){
+                if (!in_array([
+                    'name' => $product->name,
+                    'quantity' => $this->request->data['quantity'],
+                    'product_id' => $product->id,
+                    'price' => $product->price,
+                    'slug' => $product->slug,
+                    'main_image'=> $product->main_image
+                ], $this->session->read('order_line'))){
+                    $total_price = $this->session->read('total_price');
+                    $order_line[] = [
+                        'name' => $product->name,
+                        'quantity' => $this->request->data['quantity'],
+                        'product_id' => $product->id,
+                        'price' => $product->price,
+                        'slug' => $product->slug,
+                        'main_image' => $product->main_image
+                    ];
+                    $total_price = intval($total_price) + (intval($product['price']) * intval($this->request->data['quantity']));
+                    $this->session->write([   
+                        'order_line' => $order_line,
+                        'total_price' => strval($total_price)
+                    ]);
+                }
+                return $this->redirect([
+                    'controller' => 'Pages', 
+                    'action' => 'home',
+                ]);
+            }
+        }
+        $this->set(compact(['slide', 'product', 'images']));
+        $this->set('order_line', $order_line);
+
+    }
+
+
+    public function article($slug){
+        $this->viewBuilder()->setLayout('header');
+        $slide = false;
+        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $paragraphs = explode('\n',$article->article);
+        $this->set(compact(['article', 'paragraphs', 'slide']));
+    }
+
+    public function deleteProduct($slug){
+        $order_lines =  $this->session->read('order_line');
+        $total_price = intval($this->session->read('total_price'));
+
+        foreach ($order_lines as $product){
+            if($product['slug'] == strval($slug)){
+                $total_price = $total_price - (intval($product['price']) * intval($product['quantity']));
+                $key = array_search($product, $order_lines);
+                unset($order_lines[$key]);
+            }
+        }
+        $this->session->write([
+            'order_line' => $order_lines,
+            'total_price' => strval($total_price)
+        ]);
+        return $this->redirect([
+            'controller' => 'Pages', 
+            'action' => 'home',
+        ]);
+    }
+
+    public function createOrder() {
+        $order = $this->Orders->newEntity();
+        $order_session = $this->session->read('order_line');
+
+        $order->customer_id = '1';
+        $order->total_price = $this->session->read('total_price');
+        $order->status = 'pendiente';
+        $order->created_time = date('Y-m-d H:i:s');
+        $this->Orders->save($order);
+
+        foreach ($order_session as $product){
+            $orderline = $this->Orderlines->newEntity();
+
+            $orderline->orders_id = $order->id;
+            $orderline->quantity = $product['quantity'];
+            $orderline->line_price = $product['price'];
+            $orderline->products_id = $product['product_id'];
+            $this->Orderlines->save($orderline);
+        }
+        echo "<script>alert('aaaaaaa')</script>";
+        $this->session->write([
+            'order_line' => [],
+            'total_price' => ''
+        ]);
+
+        return $this->redirect([
+            'controller' => 'Pages', 
+            'action' => 'home',
+        ]);
+
+    }
 }
+

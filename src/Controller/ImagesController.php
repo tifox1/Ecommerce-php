@@ -27,8 +27,8 @@ class ImagesController extends AppController
         print_r($image);
         $created = new DateTime();
         $id = Text::uuid($created->format('Y-m-d H:i:s'));
-        $image_path = img_dir . $product_name . '_child'. '_'. strval($id) . '.' . end($image);
-        move_uploaded_file($request_data['image']['tmp_name'], $image_path);
+        $image_path = 'img_db/products/' . $product_name . '_child'. '_'. strval($id) . '.' . end($image);
+        move_uploaded_file($request_data['image']['tmp_name'], 'webroot/' .$image_path);
         return $image_path;
     }
 

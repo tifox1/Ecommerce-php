@@ -1,6 +1,8 @@
 <?php
     $webroot = $this->request->webroot;
 ?>
+
+
 <!--font-family-->
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 
@@ -37,3 +39,9 @@
 
 <!--responsive.css-->
 <link rel="stylesheet" href= <?= $webroot . "css/responsive.css" ?>>
+
+<!--carousel css-->
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+
+
+

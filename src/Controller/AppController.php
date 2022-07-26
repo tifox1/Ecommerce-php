@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Session\DatabaseSession;
 
 /**
  * Application Controller
@@ -47,6 +48,7 @@ class AppController extends Controller
         $this->loadComponent('Flash');
 
         $this->loadComponent('Auth', [
+            'authorize'=> 'Controller', 
             'authenticate' => [
                 'Form' => [
                     'fields' => [
@@ -67,6 +69,18 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         $this->Auth->allow(['home']);
-
+    }
+    public function beforeFilter(Event $event){
+        parent::beforeFilter($event);
+        $session = $this->request->session();
+        if (empty($session->read('order_line'))){
+            $session->write([
+                'order_line' => [],
+                'total_price' => ''
+            ]);
+        }
+        $total_price= $session->read('total_price');
+        $order_line = $session->read('order_line');
+        $this->set(compact(['order_line', 'total_price']));
     }
 }

@@ -18,7 +18,10 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-
+    public function isAuthorized($user = null)
+    {
+        return true;
+    }
     public function beforeRender(Event $event) {
         if ($this->Auth->user()) {
             return $this->redirect([
@@ -44,7 +47,9 @@ class UsersController extends AppController
     
     public function logout() 
     {
+        $session = $this->request->session();
         $this->Flash->success('You are now logged out.');
+        $session->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
