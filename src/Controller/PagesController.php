@@ -20,6 +20,8 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Validation\Validator;
 use Cake\Http\Session\DatabaseSession;
+use Cake\Controller\Component\FlashComponent;
+
 
 
 /**
@@ -54,17 +56,30 @@ class PagesController extends AppController
         $this->session = $this->request->session();
     }
 
-    public function isAuthorized($user = null)
+    public function isAuthorized($user)
     {
-        $action = $this->request->getParam('action');
+  
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
 
-        if (in_array($action,['product','article'])) {
-            if(!$this->request->getParam('pass.0')){
-                return false;
+        if($role == 'customer'){
+            $action = $this->request->getParam('action');
+
+            if (in_array($action,['product','article'])) {
+                if(!$this->request->getParam('pass.0')){
+                    return false;
+                }
             }
-        }
-        return true;
+            return true;
+
+        } 
+        
+        return false;
+
     }
+
 
     // public function display(...$path)
     // {
@@ -94,6 +109,11 @@ class PagesController extends AppController
     //     }
     // }
 
+    public function index() {
+        $this->viewBuilder()->setLayout('header');
+        $slide = false;
+        $this->set(compact(['slide']));
+    }
 
     public function home()
     {
@@ -206,7 +226,7 @@ class PagesController extends AppController
         $order = $this->Orders->newEntity();
         $order_session = $this->session->read('order_line');
 
-        $order->customer_id = '1';
+        $order->customer_id = $this->Auth->user(['id']);
         $order->total_price = $this->session->read('total_price');
         $order->status = 'pendiente';
         $order->created_time = date('Y-m-d H:i:s');
@@ -221,11 +241,15 @@ class PagesController extends AppController
             $orderline->products_id = $product['product_id'];
             $this->Orderlines->save($orderline);
         }
-        echo "<script>alert('aaaaaaa')</script>";
         $this->session->write([
             'order_line' => [],
             'total_price' => ''
         ]);
+        // $this->Flash->set('El pedido fue hecha', [
+        //     'element' => 'success'
+        // ]);
+
+        $this->Flash->orderSuccess('El pedido fue hecho');
 
         return $this->redirect([
             'controller' => 'Pages', 
@@ -233,5 +257,6 @@ class PagesController extends AppController
         ]);
 
     }
+
 }
 

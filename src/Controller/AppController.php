@@ -48,29 +48,31 @@ class AppController extends Controller
         $this->loadComponent('Flash');
 
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller', 
-            'authenticate' => [
-                'Form' => [
-                    'fields' => [
-                        'username' => 'name',
-                        'password' => 'password'
-                    ]
-                ]
-            ],
+            'authorize' => 'Controller', 
             'loginAction' => [
-                'controller' => 'Users',
+                'controller' => 'Customer',
                 'action' => 'login'
             ],
+            'authenticate' => [
+                'Form' => [
+                    'userModel' => 'Customer',
+                    'fields' => [
+                        'username' => 'name',
+                        'password' => 'password',
+                    ],
+                ]
+            ],
+            // 'finder' => 'auth',
              // If unauthorized, return them to page they were just on
             'unauthorizedRedirect' => $this->referer()
-        ]);        /*
-         * Enable the following component for recommended CakePHP security settings.
-         * see https://book.cakephp.org/3/en/controllers/components/security.html
-         */
-        //$this->loadComponent('Security');
-        $this->Auth->allow(['home']);
+        ]);   
+        
+        $this->loadModel('Customer');
+        $this->Auth->allow(['home', 'add']);
     }
+
     public function beforeFilter(Event $event){
+        /* Session */
         parent::beforeFilter($event);
         $session = $this->request->session();
         if (empty($session->read('order_line'))){

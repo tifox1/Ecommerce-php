@@ -401,4 +401,11 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+    'Error' => [
+        // 'errorLevel' => E_ALL,
+        'exceptionRenderer' => 'App\Error\AppExceptionRenderer',
+        // 'skipLog' => [],
+        // 'log' => true,
+        // 'trace' => true,
+    ],
 ];

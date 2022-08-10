@@ -12,6 +12,18 @@ use App\Controller\AppController;
  */
 class OrdersController extends AppController
 {
+    public function isAuthorized($user){
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
+
+        if($role == 'customer'){
+            return false;
+        }
+        return true;
+    }   
+     
     /**
      * Index method
      *

@@ -26,9 +26,6 @@
                         <li class="search">
                             <a href="#"><span class="lnr lnr-magnifier"></span></a>
                         </li><!--/.search-->
-                        <li class="nav-setting">
-                            <a href="#"><span class="lnr lnr-cog"></span></a>
-                        </li><!--/.search-->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                                 <span class="lnr lnr-cart"></span>
@@ -36,7 +33,6 @@
                             </a>
 
                             <ul class="dropdown-menu cart-list s-cate">
-
                                 <?php foreach($order_line as $product):?>
                                     <li class="single-cart-list">
                                         <a href="#" class="photo"><img src="<?= $webroot . $product['main_image'] ?>" class="cart-thumb" alt="image" /></a>
@@ -70,9 +66,14 @@
                             
                                     </li><!--/.single-cart-list -->
                                 <?php endif;?>
-
                             </ul>
                         </li><!--/.dropdown-->
+                        <li class="nav-setting">
+                            <a href="<?= $this->Url->build([
+                                'controller' => 'Customer',
+                                'action' => 'logout',
+                            ])?>"><i class="bi bi-box-arrow-right"></i></a>
+                        </li><!--/.search-->
                     </ul>
                 </div><!--/.attr-nav-->
                 <!-- End Atribute Navigation -->

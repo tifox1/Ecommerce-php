@@ -12,6 +12,61 @@ use App\Controller\AppController;
  */
 class CustomerController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow('logout');
+    }
+
+    /*
+        restrict actions depending by roles
+    */
+    public function isAuthorized($user){
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
+
+        if($role == 'customer'){
+            return false;
+        }
+        return true;
+    }   
+    /**/
+
+    public function logout() 
+    {
+        $session = $this->request->session();
+        $session->destroy();
+        return $this->redirect($this->Auth->logout());
+    }
+
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $role = $this->Customer->find('role', [
+                        'id' => $user['id']
+                    ])->firstOrFail()
+                    ->role;
+                $this->Auth->setUser($user);
+                if($role == 'customer'){
+                    return $this->redirect([
+                        'controller' => 'Pages',
+                        'action' => 'home'
+                    ]);
+                } else {
+                    return $this->redirect([
+                        'controller' => 'Products',
+                        'action' => 'index'
+                    ]);
+                }
+            }
+            $this->Flash->error('Your username or password is incorrect.');
+        }
+    }
+    
     /**
      * Index method
      *
@@ -50,6 +105,7 @@ class CustomerController extends AppController
         $customer = $this->Customer->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customer->patchEntity($customer, $this->request->getData());
+            $customer->role = 'customer';
             if ($this->Customer->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 

@@ -13,9 +13,18 @@ define("img_dir", "webroot/img_db/articles/");
  */
 class ArticlesController extends AppController
 {
-    public function isAuthorized(){
+    public function isAuthorized($user){
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
+
+        if($role == 'customer'){
+            return false;
+        }
         return true;
-    }
+    }   
+    
 
     /**
      * Index method

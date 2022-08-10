@@ -22,6 +22,7 @@ use Cake\Validation\Validator;
  */
 class CustomerTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -39,6 +40,7 @@ class CustomerTable extends Table
         $this->hasMany('Orders', [
             'foreignKey' => 'customer_id',
         ]);
+        // $this->table('customer');
     }
 
     /**
@@ -86,5 +88,14 @@ class CustomerTable extends Table
         $rules->add($rules->isUnique(['email']));
 
         return $rules;
+    }
+
+    public function findRole(Query $query, array $options)
+    {
+        $query->find('all')->where([
+            'id' => $options['id']
+        ])->firstOrFail();
+
+        return $query;
     }
 }

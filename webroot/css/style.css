@@ -1084,7 +1084,13 @@ span.feature-review {margin-left: 10px;}
 /* Order cart */
     .order-form{
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
+        margin: 0 auto;
+        width: 90%;
+    }
+    .order-form .order-price {
+        text-align: left;
     }
     .order-container > div{
         margin: 0px;
@@ -1105,4 +1111,30 @@ span.feature-review {margin-left: 10px;}
 
 /**/
 
+/* success order */
+    .alert {
+        width: 300px;
+        height: 50px;
+        bottom: 10px;
+        position: sticky;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+/**/
+
+/* index page */
+    /* General */
+        .product-list-section {
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+    /**/
+    /*product section*/
+        .product-img {
+            display: flex;
+            justify-content: center;
+        }
+    /**/
+/**/
 /*========================Thank you=================

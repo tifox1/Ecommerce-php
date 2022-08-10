@@ -16,12 +16,24 @@ define("img_dir", "webroot/img_db/products/");
  */
 class ImagesController extends AppController
 {
+    public function isAuthorized($user){
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
+
+        if($role == 'customer'){
+            return false;
+        }
+        return true;
+    }   
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
-
+    
     private function setImage($request_data, $product_name) {
         $image = explode('.', $request_data['image']['name']);
         print_r($image);

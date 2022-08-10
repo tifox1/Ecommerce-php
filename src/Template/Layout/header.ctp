@@ -19,3 +19,5 @@
         <?= $this->element('scripts') ?>
     </body>
 </html>
+
+<?= $this->Flash->render() ?>

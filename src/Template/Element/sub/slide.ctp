@@ -39,20 +39,18 @@
                                                             <del>$ <?= intval($product->price) + 0.30 * intval($product->price) ?></del>
                                                         </p>
                                                     </div>
-                                                    <button class="btn-cart welcome-add-cart" onclick="window.location.href='#'">
+                                                    <button class="btn-cart welcome-add-cart" onclick="window.location.href='<?= $this->Url->build(['controller' => 'Pages', 'action' => 'product', $product->slug])?>'">
                                                         <span class="lnr lnr-plus-circle"></span>
                                                         add <span>to</span> cart
                                                     </button>
-                                                    <button class="btn-cart welcome-add-cart welcome-more-info" onclick="window.location.href='#'">
-                                                        more info
-                                                    </button>
+
                                                 </div><!--/.welcome-hero-txt-->
                                             </div><!--/.single-welcome-hero-->
                                         </div><!--/.col-->
                                         <div class="col-sm-5">
                                             <div class="single-welcome-hero">
                                                 <div class="welcome-hero-img">
-                                                    <img src= <?= $webroot . "img_db/products/mesa_parent.png" ?> alt="slider image">
+                                                    <img src= <?= $webroot . $product->main_image ?> alt="slider image">
                                                 </div><!--/.welcome-hero-txt-->
                                             </div><!--/.single-welcome-hero-->
                                         </div><!--/.col-->
@@ -83,12 +81,9 @@
                                                             <del>$ <?= intval($product->price) + 0.30 * intval($product->price) ?></del>
                                                         </p>
                                                     </div>
-                                                    <button class="btn-cart welcome-add-cart" onclick="window.location.href='#'">
+                                                    <button class="btn-cart welcome-add-cart" onclick="window.location.href='<?= $this->Url->build(['controller' => 'Pages', 'action' => 'product', $product->slug])?>'">
                                                         <span class="lnr lnr-plus-circle"></span>
                                                         add <span>to</span> cart
-                                                    </button>
-                                                    <button class="btn-cart welcome-add-cart welcome-more-info" onclick="window.location.href='#'">
-                                                        more info
                                                     </button>
                                                 </div><!--/.welcome-hero-txt-->
                                             </div><!--/.single-welcome-hero-->

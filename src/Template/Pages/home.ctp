@@ -1,6 +1,5 @@
 <?php
     $webroot = $this->request->webroot;
-    print_r($order_line);
 ?>
 <!--new-arrivals start -->
 <section id="new-arrivals" class="new-arrivals">
@@ -105,14 +104,14 @@
                         <div class="single-feature">
                             <img src= <?= $webroot . $product->main_image ?> alt="feature image">
                             <div class="single-feature-txt text-center">
-                                <p>
+                                <!-- <p>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
                                     <span class="feature-review">(45 review)</span>
-                                </p>
+                                </p> -->
                                 <h3><a href="<?= $this->Url->build([
                                     'controller' => 'Pages',
                                     'action' => 'product',
@@ -176,27 +175,27 @@
         <div class="owl-carousel owl-theme" id="client">
                 <div class="item">
                     <a href="#">
-                        <img src="assets/images/clients/c1.png" alt="brand-image" />
+                        <img src=<?= $webroot . "img_db/clients/c1.png"?> alt="brand-image" />
                     </a>
                 </div><!--/.item-->
                 <div class="item">
                     <a href="#">
-                        <img src="assets/images/clients/c2.png" alt="brand-image" />
+                        <img src= <?= $webroot . "img_db/clients/c2.png"?> alt="brand-image" />
                     </a>
                 </div><!--/.item-->
                 <div class="item">
                     <a href="#">
-                        <img src="assets/images/clients/c3.png" alt="brand-image" />
+                        <img src= <?= $webroot . "img_db/clients/c3.png"?> alt="brand-image" />
                     </a>
                 </div><!--/.item-->
                 <div class="item">
                     <a href="#">
-                        <img src="assets/images/clients/c4.png" alt="brand-image" />
+                        <img src= <?= $webroot . "img_db/clients/c4.png"?> alt="brand-image" />
                     </a>
                 </div><!--/.item-->
                 <div class="item">
                     <a href="#">
-                        <img src="assets/images/clients/c5.png" alt="brand-image" />
+                        <img src= <?= $webroot . "img_db/clients/c5.png"?> alt="brand-image" />
                     </a>
                 </div><!--/.item-->
             </div><!--/.owl-carousel-->

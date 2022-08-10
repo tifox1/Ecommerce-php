@@ -27,11 +27,24 @@ class ProductsController extends AppController
         // Always enable the CSRF component.
         $this->loadModel('Images');
         $this->loadModel('Categories');
+        $this->loadModel('Customer');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'authorize' => 'Controller',
         ]);
     }
+
+    public function isAuthorized($user){
+        $role = $this->Customer->find('role', [
+                'id' => $user['id']
+            ])->firstOrFail()
+            ->role;
+
+        if($role == 'customer'){
+            return false;
+        }
+        return true;
+    }   
 
     /*
         data -> image information
@@ -81,19 +94,6 @@ class ProductsController extends AppController
      * third parameter recieves form html name 
      * @return new path field of the image
     */
-
-    public function isAuthorized($user)
-    {
-        if ($user) {
-            return true;
-        }
-        $this->redirect([
-            'controller' => 'Users',
-            'action' => 'login'
-        ]);
-        // Default deny
-        return false;
-    }
 
     /* Lists products*/
     public function index()
@@ -185,8 +185,8 @@ class ProductsController extends AppController
                 } else {
                     $file = explode('.', $product->main_image);
                     $new_path = img_dir . $this->request->data['name'] . '_parent' . '.' . end($file);
-                    rename($product->main_image, $new_path);
-                    $product->main_image = $new_path; 
+                    rename('webroot/'.$product->main_image, $new_path);
+                    $product->main_image = 'img_db/products/' . $this->request->data['name'] . '_parent' . '.' . end($file); 
                 }
                 $this->setNewFilename($product);
                 $this->Products->save($product);
