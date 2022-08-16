@@ -21,7 +21,8 @@ use Cake\View\Exception\MissingTemplateException;
 use Cake\Validation\Validator;
 use Cake\Http\Session\DatabaseSession;
 use Cake\Controller\Component\FlashComponent;
-
+use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query;
 
 
 /**
@@ -53,6 +54,7 @@ class PagesController extends AppController
         $this->loadModel('Orders');
         $this->loadModel('Orderlines');
         $this->loadModel('Articles');
+        $this->loadModel('Categories');
         $this->session = $this->request->session();
     }
 
@@ -112,7 +114,48 @@ class PagesController extends AppController
     public function index() {
         $this->viewBuilder()->setLayout('header');
         $slide = false;
-        $this->set(compact(['slide']));
+        $categories = $this->Categories->find('list');
+        $products = $this->Products->find('all');
+        $products_qty = $products->count();
+
+        if ($this->request->is(['post'])) {
+            //if both are empty
+            if (empty($this->request->data['name']) && $this->request->data['category'] == '0') { 
+                $products = $this->Products->find('all');
+                echo 'Condicion 1';
+
+            //if name is empty and category isn't
+            } elseif (empty($this->request->data['name']) && $this->request->data['category'] != '0') { 
+                $products = $this->Products->find('all')
+                ->where([
+                    'categories_id' => $this->request->data['category'],
+                ]);
+                echo 'Condicion 2';
+
+            // if name is filled and category isn't filled
+            } elseif (!empty($this->request->data['name']) && $this->request->data['category'] == '0') {
+                $products = $this->Products->find('all')
+                ->where(function (QueryExpression $exp, Query $q) {
+                    return $exp->like('name', '%' . $this->request->data['name']);
+                });   
+                echo 'Condicion 3';
+
+            //if both are filled
+            } elseif (!empty($this->request->data['name']) && $this->request->data['category'] != '0') {
+                $products = $this->Products->find('all')
+                ->where([
+                    'categories_id' => $this->request->data['category'],
+                ])
+                ->andWhere(function (QueryExpression $exp, Query $q) {
+                    return $exp->like('name', '%' . $this->request->data['name']);
+                }); 
+                echo 'Condicion 4';
+
+            }
+            echo '<br>'. $this->request->data['category'];
+            $products_qty = $products->count();
+        }
+        $this->set(compact(['slide', 'categories', 'products', 'products_qty']));
     }
 
     public function home()

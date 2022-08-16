@@ -1136,5 +1136,71 @@ span.feature-review {margin-left: 10px;}
             justify-content: center;
         }
     /**/
+    /*Filter searcher*/
+        .filter-searcher {
+            margin-top: 150px;
+            margin-bottom: 50px;
+        }
+        .search-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+        .select-container {
+            margin: 10px;
+
+        }
+        .select-container div select:focus{
+            /* border: none; */
+            outline: none;
+            box-shadow: none;
+        }
+        .select-container div .form-control {
+            border: 1px solid #e99c2e;
+            width: 100%;
+        }
+
+        .search-container {
+            margin: 10px;
+            background: #e99c2e;
+            border-top: 1px solid #e99c2e;
+            border-bottom: 1px solid #e99c2e;
+            border-right: 1px solid #e99c2e;
+            border-radius: 5px;
+            width: fit-content;
+            display: flex;
+            height: 36px;
+        }
+        .search-container div input{
+            width: 100%;
+            border-radius: 0px;
+            border: 1px solid #f8f9fd;
+            box-shadow: none;
+        }
+        .search-container div input:focus{
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+        .search-icon-container .lnr{
+            display: flex;
+            justify-content: space-between;
+            font-size: large;
+            color: white;
+            margin: 10px;
+        }
+    /**/
+    /* Search Error */
+        .error-finding-product {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40%;
+        }
+        .error-finding-product div p {
+            font-size: x-large;
+        }
+    /**/
 /**/
 /*========================Thank you=================

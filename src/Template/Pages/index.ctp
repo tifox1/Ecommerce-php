@@ -3,267 +3,69 @@
 ?>
 <section class="filter-searcher">
     <?= $this->Form->create(null, [
-        'class' => '',
         'url' => [
             'controller' => 'Pages',
-            'action' => "createOrder",
+            'action' => 'index',
         ]
     ]) ?>
-        <div class="col-auto">
-        <label class="sr-only" for="inlineFormInputGroup">Username</label>
-        <div class="input-group mb-2">
-            <div class="input-group-prepend">
-            <div class="input-group-text">@</div>
+        <div class="search-grid">
+            <div class="search-container">
+                <div class="search-icon-container">
+                    <button type="submit"><span class="lnr lnr-magnifier"></span></button>
+                </div>
+                <?php echo $this->Form->input('name', [
+                    'label' => false,
+                    'class' => 'form-control',
+                ]);?>
             </div>
-            <!-- <?= $this->Form->control('user') ?> -->
-            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username">
-        </div>
-        </div>
+            <div class="select-container">
+                <?= $this->Form->input('category', [
+                    'empty' => ['0' => ''],
+                    'label' => false,
+                    'class' => 'form-control',
+                    'options' => $categories
+                ]) ?> 
+            </div>
+        </div>    
     <?= $this->Form->end() ?>   
 </section>
 <section class="product-list-section">
     <div class="row">  
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
+        <?php if($products_qty != 0): ?>
+            <?php foreach($products as $product):?>
+                <div class="item">
+                    <div class="col-sm-3">
+                        <div class="single-feature">
+                            <div class="product-img">
+                                <img src= <?= $webroot . $product->main_image?> alt="feature image">
+                            </div>
+                            <div class="single-feature-txt text-center">
+                                <!-- <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
+                                    <span class="feature-review">(45 review)</span>
+                                </p> -->
+                                <h3><a href="<?= $this->Url->build([
+                                    'controller' => 'Pages',
+                                    'action' => 'product',
+                                    $product->slug
+                                ])?>"><?= $product->name ?></a></h3>
+                                <h5>$ <?= $product->price ?></h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="error-finding-product">
+                <div>
+                    <p>Lo sentimos. El producto que fue buscado no existe</p>
                 </div>
             </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-sm-3">
-                <div class="single-feature">
-                    <div class="product-img">
-                        <img src= <?= $webroot . 'img_db/clients/p1.png' ?> alt="feature image">
-                    </div>
-                    <div class="single-feature-txt text-center">
-                        <!-- <p>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span class="spacial-feature-icon"><i class="fa fa-star"></i></span>
-                            <span class="feature-review">(45 review)</span>
-                        </p> -->
-                        <h3><a href="<?= $this->Url->build([
-                            'controller' => 'Pages',
-                            'action' => 'product',
-                        ])?>">Nombre </a></h3>
-                        <h5>$ 100</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <?php endif;?>
     </div>
 
 </section>
