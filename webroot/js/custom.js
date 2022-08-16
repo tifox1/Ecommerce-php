@@ -101,8 +101,9 @@ $(document).ready(function(){
 
 });
 function cartClose(slug){
+	address= window.location.host
 	// $(".cart-close").click(function(){
 		// $(this).parents(".single-cart-list").fadeOut();
-	window.location.replace(`http://localhost:8765/pages/delete_product/${slug}`);
+	window.location.replace(`http://${address}/pages/delete_product/${slug}`);
 	// });
 }
