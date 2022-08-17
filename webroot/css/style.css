@@ -530,7 +530,7 @@ ul.cart-list > li.total {
 /*-------------------------------------
         5. New-arrivals 
 --------------------------------------*/
-.new-arrivals {padding:85px 0 70px;}
+.new-arrivals {padding:85px 0 0px;}
 .new-arrivals-content{margin-top: 80px;}
 
 .single-new-arrival{margin-bottom: 50px;text-align: center;}
@@ -706,7 +706,7 @@ p.arrival-review span {margin-right: 15px;}
 /*-------------------------------------
         7. Features
 --------------------------------------*/
-.feature {padding:110px 0 0px;}
+.feature {padding:0px 0 0px;}
 
 .feature-content,.blog-content{margin-top: 75px;}
 .single-feature,.single-blog {margin-bottom:30px;}
@@ -1203,4 +1203,43 @@ span.feature-review {margin-left: 10px;}
         }
     /**/
 /**/
-/*========================Thank you=================
+/* Login */
+    .login-container {
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .login-form input, label {
+        display: block;
+        color: #e99c2e;
+    }
+    .login-container-form div {
+        margin: 10px;
+    }
+    .login-container-form {
+        /* position: relative; */
+        background: #f8f9fd;
+        max-height: 300px;
+        max-width: 300px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    .login-buttom {
+        float: right;
+        background: #e99c2e;
+        color: #000;
+        height: 40px;
+        width: 70px;
+        border-radius: 10px;
+
+    }
+/**/
+
+/*========================Thank you========================*/
